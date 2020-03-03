@@ -54,6 +54,13 @@ public class LoginActivity extends AppCompatActivity
             }
         });
 
+        ForgetPasswordLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"write code",Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +79,6 @@ public class LoginActivity extends AppCompatActivity
             }
         });
     }
-
 
 
 
@@ -119,7 +125,7 @@ public class LoginActivity extends AppCompatActivity
                             {
                                 String currentUserId = mAuth.getCurrentUser().getUid();
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
-
+                                //Toast.makeText(getApplicationContext(),"token is  "+deviceToken,Toast.LENGTH_SHORT).show();
                                 UsersRef.child(currentUserId).child("device_token")
                                         .setValue(deviceToken)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
