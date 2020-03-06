@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WC Chat</string>
+    <string name="update">Update</string>
+    <string name="hey_i_am_available_now">hey, i am available now.</string>
 </resources>
