@@ -1,8 +1,13 @@
+
 package com.whichcollege;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -55,10 +61,10 @@ public class ChatActivity extends AppCompatActivity
     private MessageAdapter messageAdapter;
     private RecyclerView userMessagesList;
 
-
     private String saveCurrentTime, saveCurrentDate;
-
-
+    private String checker = "",myUrl="";
+    private Uri fileUri;
+    private StorageTask uploadTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -94,6 +100,50 @@ public class ChatActivity extends AppCompatActivity
 
 
         DisplayLastSeen();
+
+        SendFilesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CharSequence options[] = new CharSequence[]
+                        {
+                                "Images",
+                                "Pdf Files",
+                                "MS Word Files"
+                        };
+                AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+                builder.setTitle("Select the File");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(i==0)
+                        {
+                            checker = "image";
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            startActivityForResult(intent.createChooser(intent,"Select Image"),443);
+                        }
+                        else if (i==1)
+                        {
+                            checker = "pdf";
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("application/pdf");
+                            startActivityForResult(intent.createChooser(intent,"Select PDF"),443);
+                        }
+                        else if (i==2)
+                        {
+                            checker = "docx";
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.setType("application/msword");
+                            startActivityForResult(intent.createChooser(intent,"Select MSWORD FILE"),443);
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
     }
 
 
